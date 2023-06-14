@@ -2,12 +2,13 @@ const userDB = require("../models/model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+// User registration
 exports.create = (req, res) => {
   if (!req.body) {
     res.status(400).send({ message: "not found" });
     return;
   }
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
   const user = userDB.findOne({ email }).then((foundUser) => {
     if (foundUser) {
       return res.status(409).send({ message: "Email already exists" });
@@ -18,6 +19,7 @@ exports.create = (req, res) => {
       .hash(password, saltRounds)
       .then((hashedPassword) => {
         const user = new userDB({
+          name,
           email,
           password: hashedPassword,
         });
@@ -35,6 +37,7 @@ exports.create = (req, res) => {
   });
 };
 
+//Take out all users
 exports.get = (req, res) => {
   if (req.query.id) {
     const id = req.query.id;
@@ -68,6 +71,7 @@ exports.get = (req, res) => {
   }
 };
 
+//Update user
 exports.update = (req, res) => {
   if (!req.body) {
     res.status(400).send({ message: "error" });
@@ -89,6 +93,7 @@ exports.update = (req, res) => {
     });
 };
 
+// Login users
 exports.login = (req, res) => {
   userDB
     .findOne({ email: req.body.email })
@@ -121,6 +126,7 @@ exports.login = (req, res) => {
     });
 };
 
+// Take out JWT
 exports.getUserData = (req, res) => {
   const authToken = req.headers.authorization;
 
