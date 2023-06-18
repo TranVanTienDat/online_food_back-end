@@ -8,7 +8,14 @@ exports.create = (req, res) => {
     res.status(400).send({ message: "not found" });
     return;
   }
-  const { name, email, password } = req.body;
+  const {
+    name,
+    email,
+    password,
+    gender = "",
+    address = "",
+    phoneNumber = "",
+  } = req.body;
   const user = userDB.findOne({ email }).then((foundUser) => {
     if (foundUser) {
       return res.status(409).send({ message: "Email already exists" });
@@ -22,6 +29,9 @@ exports.create = (req, res) => {
           name,
           email,
           password: hashedPassword,
+          gender,
+          address,
+          phoneNumber,
         });
         user
           .save()

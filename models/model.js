@@ -14,6 +14,9 @@ const auth = new Schema({
     type: String,
     required: true,
   },
+  gender: String,
+  address: String,
+  phoneNumber: String,
 });
 const userDB = mongoose.model("userDB", auth);
 module.exports = userDB;
