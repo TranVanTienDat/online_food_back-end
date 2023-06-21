@@ -163,3 +163,66 @@ exports.getUserData = (req, res) => {
       });
   });
 };
+
+// Update Password
+exports.updatePassword = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({ message: "error" });
+  }
+  const id = req.params.id;
+  const newPassword = req.body.newPassword;
+  const currentPassword = req.body.currentPassword;
+
+  userDB
+    .findById(id)
+    .then((foundUser) => {
+      if (!foundUser) {
+        return res
+          .status(404)
+          .send({ message: `User not found with id ${id}` });
+      }
+
+      bcrypt
+        .compare(currentPassword, foundUser.password)
+        .then((match) => {
+          if (!match) {
+            return res
+              .status(401)
+              .send({ message: "Incorrect current password" });
+          }
+
+          const saltRounds = 10;
+          bcrypt
+            .hash(newPassword, saltRounds)
+            .then((hashedPassword) => {
+              userDB
+                .findByIdAndUpdate(
+                  id,
+                  { password: hashedPassword },
+                  { useFindAndModify: false }
+                )
+                .then((data) => {
+                  if (!data) {
+                    res
+                      .status(404)
+                      .send({ message: `Update unsuccessful for user ${id}` });
+                  } else {
+                    res.send({ message: "Password updated successfully." });
+                  }
+                })
+                .catch((err) => {
+                  res.status(500).send({ message: "Error updating password" });
+                });
+            })
+            .catch((err) => {
+              res.status(500).send({ message: "Error" });
+            });
+        })
+        .catch((error) => {
+          res.status(500).send({ message: "Internal server error" });
+        });
+    })
+    .catch((error) => {
+      res.status(500).send({ message: "Internal server error" });
+    });
+};
