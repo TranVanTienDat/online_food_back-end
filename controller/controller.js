@@ -1,8 +1,6 @@
 const userDB = require("../models/model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const nodemailer = require("nodemailer");
-const cron = require("node-cron");
 const e = require("express");
 
 // User registration
@@ -268,67 +266,3 @@ exports.forgotPassword = (req, res) => {
       });
   });
 };
-
-// // Forgot password
-// exports.forgotPassword = (req, res) => {
-//   const { email } = req.body;
-//   console.log(email);
-//   userDB
-//     .findOne({ email })
-//     .then((foundUser) => {
-//       if (!foundUser) {
-//         return res.status(404).send({ message: "Email not found" });
-//       }
-
-//       // Generate a new password
-//       const newPassword = generateNewPassword();
-
-//       // Update user's password in database
-//       return userDB
-//         .updateOne({ email }, { password: newPassword })
-//         .then(() => {
-//           // Send new password to user's email
-//           const transporter = nodemailer.createTransport({
-//             service: "gmail",
-//             auth: {
-//               user: "tiendat03cam@gmail.com",
-//               pass: "aA@12345",
-//             },
-//           });
-
-//           const mailOptions = {
-//             from: "tiendat03cam@gmail.com",
-//             to: email,
-//             subject: "New password",
-//             text: `Your new password is: ${newPassword}`,
-//           };
-
-//           return transporter.sendMail(mailOptions);
-//         })
-//         .then(() => {
-//           res.status(200).send({ message: "New password sent to email" });
-//         })
-//         .catch((error) => {
-//           console.error(error);
-//           res.status(500).send({ message: "Error sending new password" });
-//         });
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//       res.status(500).send({ message: "Error finding user" });
-//     });
-// };
-// // Helper function to generate new password
-// function generateNewPassword() {
-//   const characters =
-//     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-//   let newPassword = "";
-
-//   for (let i = 0; i < 8; i++) {
-//     newPassword += characters.charAt(
-//       Math.floor(Math.random() * characters.length)
-//     );
-//   }
-
-//   return newPassword;
-// }
