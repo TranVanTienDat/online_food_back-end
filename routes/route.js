@@ -8,4 +8,5 @@ route.get("/api/user/getAuth", a.getUserData);
 route.get("/api/users", a.get);
 route.put("/api/user/:id", a.update);
 route.put("/api/user/password/:id", a.updatePassword);
+route.post("/api/user/forgot-password", a.forgotPassword);
 module.exports = route;
