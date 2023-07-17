@@ -1,11 +1,11 @@
-const express = require("express");
-const app = express();
-const userDB = require("./dataBase/connection");
-const bodyParser = require("body-parser");
-const connect = require("./dataBase/connection");
 const dotenv = require("dotenv");
-dotenv.config({ path: ".env" });
+const express = require("express");
+const bodyParser = require("body-parser");
+const userDB = require("./dataBase/connection");
+const connect = require("./dataBase/connection");
+const app = express();
 const cors = require("cors");
+dotenv.config({ path: ".env" });
 
 const PORT = process.env.PORT || 5000;
 
@@ -18,6 +18,7 @@ app.use("/", require("./routes/route.js"));
 
 // Connect db
 userDB();
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

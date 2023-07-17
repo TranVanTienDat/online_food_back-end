@@ -266,3 +266,19 @@ exports.forgotPassword = (req, res) => {
       });
   });
 };
+
+exports.deleteUser = (req, res) => {
+  const { id } = req.params;
+  userDB
+    .findByIdAndDelete(id)
+    .then((data) => {
+      if (!data) {
+        res.status(400).send({ message: "Error can not be deleted" });
+      } else {
+        res.send({ message: "Delete successfully." });
+      }
+    })
+    .catch(() => {
+      res.status(500).send({ message: "Internal server error" });
+    });
+};
