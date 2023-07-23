@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true, limit: "30mb" }));
 app.use(cors());
 
 app.use("/", require("./routes/route.js"));
-
+app.get("/home", (req, res) => res.send("hello"));
 // Connect db
 userDB();
 
