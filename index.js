@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const userDB = require("./dataBase/connection");
 const connect = require("./dataBase/connection");
+const route = require("./routes/route");
 const app = express();
 const cors = require("cors");
 dotenv.config({ path: ".env" });
@@ -14,7 +15,7 @@ app.use(express.json({ limit: "30mb" }));
 app.use(express.urlencoded({ extended: true, limit: "30mb" }));
 app.use(cors());
 
-app.use("/", require("./routes/route.js"));
+app.use("/", route);
 // Connect db
 userDB();
 
