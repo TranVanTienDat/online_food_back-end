@@ -9,10 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "index.js",
-      "config": {
-        "zeroConfig": true
-      }
+      "dest": "/"
     }
   ]
 }

@@ -4,11 +4,11 @@ const bodyParser = require("body-parser");
 const userDB = require("./dataBase/connection");
 const connect = require("./dataBase/connection");
 const route = require("./routes/route");
-const app = express();
+const http = require("http");
 const cors = require("cors");
 dotenv.config({ path: ".env" });
 
-const PORT = process.env.PORT || 5000;
+const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json({ limit: "30mb" }));
@@ -19,10 +19,13 @@ app.use("/", route);
 app.get("/home", (req, res) => {
   res.status(200).send("success");
 });
+
+const PORT = process.env.PORT || 5000;
+const server = http.createServer(app);
+
 // Connect db
 userDB();
-
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
